@@ -1,8 +1,6 @@
 require('dotenv').config();
-const {CONNECTION_STRING} = process.env;
 
-const userId = 4;
-const clientId = 3;
+const {CONNECTION_STRING} = process.env;
 
 const Sequelize = require('sequelize');
 
@@ -14,6 +12,9 @@ const sequelize = new Sequelize(CONNECTION_STRING, {
         }
     }
 })
+
+const userId = 4;
+const clientId = 3;
 
 module.exports = {
     getUserInfo: (req, res) => {
@@ -50,10 +51,9 @@ module.exports = {
         })
     },
     requestAppointment: (req, res) => {
-        const {date, service} = req.body;
         sequelize.query(`INSERT INTO cc_appointments (
             client_id, date, service_type, notes, approved, completed)
-        VALUES (${clientId}, '${date}', '${service}', '', false, false)
+        VALUES (${clientId}, '${req.body.date}', '${req.body.service}', '', false, false)
         RETURNING *;
         `).then(dbRes => {
             res.status(200).send(dbRes[0])
