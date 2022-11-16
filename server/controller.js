@@ -21,9 +21,9 @@ module.exports = {
         sequelize.query(`SELECT * FROM cc_clients AS c
         JOIN cc_users AS u
         ON c.user_id = u.user_id
-        WHERE u.user_id = ${userId}`).then(dbRes => {
-            res.status(200).send(dbRes[0])
-        })
+        WHERE u.user_id = ${userId}`)
+        .then(dbRes => res.status(200).send(dbRes[0]))
+        .catch(err => console.log(err))
     },
     updateUserInfo: (req, res) => {
         const {firstName, lastName, phoneNumber, email, address, city, state, zipCode} = req.body;
@@ -40,23 +40,24 @@ module.exports = {
         state = '${state}',
         zip_code = ${zipCode}
         WHERE user_id = ${userId};
-        `).then(() => res.sendStatus(200))
+        `)
+        .then(() => res.sendStatus(200))
         .catch(err => console.log(err))
     },
     getUserAppt: (req, res) => {
         sequelize.query(`SELECT * FROM cc_appointments
         WHERE client_id = ${clientId}
-        ORDER BY date DESC;`).then(dbRes => {
-            res.status(200).send(dbRes[0])
-        })
+        ORDER BY date DESC;`)
+        .then(dbRes => res.status(200).send(dbRes[0]))
+        .catch(err => console.log(err))
     },
     requestAppointment: (req, res) => {
         sequelize.query(`INSERT INTO cc_appointments (
             client_id, date, service_type, notes, approved, completed)
         VALUES (${clientId}, '${req.body.date}', '${req.body.service}', '', false, false)
         RETURNING *;
-        `).then(dbRes => {
-            res.status(200).send(dbRes[0])
-        })
+        `)
+        .then(dbRes => res.status(200).send(dbRes[0]))
+        .catch(err => console.log(err))
     }
 }
