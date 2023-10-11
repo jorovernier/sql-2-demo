@@ -11,6 +11,7 @@ app.use(cors())
 
 // DEV
 app.post('/seed', seed)
+// seed()
 
 // USER
 app.get('/user', getUserInfo)

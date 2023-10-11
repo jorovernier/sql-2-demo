@@ -1,16 +1,7 @@
-require('dotenv').config();
-const {CONNECTION_STRING} = process.env;
+require('dotenv').config()
 
-const Sequelize = require('sequelize');
-
-const sequelize = new Sequelize(CONNECTION_STRING, {
-    dialect: 'postgres',
-    dialectOptions: {
-        ssl: {
-            rejectUnauthorized: false
-        }
-    }
-})
+const Sequelize = require('sequelize')
+const sequelize = new Sequelize(process.env.CONNECTION_STRING)
 
 module.exports = {
     seed: (req, res) => {
